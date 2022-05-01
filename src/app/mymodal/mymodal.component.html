@@ -1,0 +1,87 @@
+<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="GIHS">
+              <span>
+                GIHS
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <input nz-input id="GIHS" formControlName="GIHS" readonly="true">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>
+              <span>
+                Name
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="nameErrorTpl">
+              <input nz-input id="name" formControlName="name">
+              <ng-template #nameErrorTpl let-control> 
+                  <ng-container *ngIf="control.hasError('required')">Please input name!</ng-container>
+                  <ng-container *ngIf="control.hasError('minlength')">Length of name must be greater than 5</ng-container>                 
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="district" nzRequired>
+              <span>
+                District
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="districtErrorTpl">
+              <input nz-input id="district" formControlName="district">
+              <ng-template #districtErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input district!</ng-container>
+                <ng-container *ngIf="control.hasError('minlength')">Length of name must be greater than 5</ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="address" nzRequired>
+              <span>
+                Address
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="addressErrorTpl">
+              <input nz-input id="address" formControlName="address">
+              <ng-template #addressErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input address!</ng-container>
+                <ng-container *ngIf="control.hasError('minlength')">Length of name must be greater than 10</ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="longitude" nzRequired>
+              <span>
+                Longitude
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="longitudeErrorTpl">
+              <input nz-input id="longitude" formControlName="longitude">
+              <ng-template #longitudeErrorTpl let-control>                  
+                  <ng-container *ngIf="control.hasError('required')">Please input longitude!</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (x-x-x)!</ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="latitude" nzRequired>
+              <span>
+                Latitude
+              </span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="latitudeErrorTpl">
+              <input nz-input id="latitude" formControlName="latitude">
+              <ng-template #latitudeErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Please input longitude!</ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (x-x-x)!</ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+    </ng-container>    
+</nz-modal>
