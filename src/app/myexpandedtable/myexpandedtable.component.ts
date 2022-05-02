@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 //import { trimTrailingNulls } from '@angular/compiler/src/render3/view/util';
 import { Component, OnInit } from '@angular/core';
+// import { timeStamp } from 'console';
 // import { resolve } from 'dns';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BbqRecordMaster, BbqRecordDetail, BbqRecord, clsBbq } from '../BbqRecord.model';
@@ -33,6 +34,8 @@ export class MytableComponent implements OnInit {
   // flag / indicator of showing modal
   modalIsVisible: boolean;
   modalTitle: string;
+  // keyword for search
+  keyword: string;
   // dialog
   confirmModal!: NzModalRef;
   modalService!: NzModalService;
@@ -56,6 +59,7 @@ export class MytableComponent implements OnInit {
     this.listOfDetail = [];
     this.listOfColumns = [];
     this.listOfDistrictFilter = [];
+    this.keyword = '';
     this.modalIsVisible = false;
     this.modalService = modal;
     // empty record for add process
@@ -79,6 +83,26 @@ export class MytableComponent implements OnInit {
     this.onload();    
   }
 
+  async onsearch() {
+    this.listOfData = [];
+    this.listOfMaster = [];
+    this.listOfDetail = [];
+    this.listOfDistrictFilter = [];
+    // sequence of data loading and filling:
+    // 1. load the searched list of data for rows, fill the lists
+    // 2 load the list of district, fill the lists 
+    // 3. assign the listOfColumns 
+    this.isloaded = false;
+    //this.fillTheListOfColumns
+    await this.getDistrict()
+    .then( () => this.fillTheListOfColumns() )
+    .then( () => this.getListSearchedData() )
+    .then( () => {
+      this.isloaded = true;
+      console.log("isloaded is true.");
+    });
+  }
+
   async onload() {
     this.listOfData = [];
     this.listOfMaster = [];
@@ -94,15 +118,11 @@ export class MytableComponent implements OnInit {
     .then( () => this.fillTheListOfColumns() )
     .then( () => this.getListData() )
     .then( () => {
+      this.keyword = "";
       this.isloaded = true;
       console.log("isloaded is true.");
     });
-    /*
-    await this.getListData()
-    .then(() => this.getDistrict())
-    .then(() => this.fillTheListOfColumns)
-    .then(() => this.isloaded = true);
-    */
+    
   }
 
   fillTheListOfColumns() {
@@ -244,6 +264,27 @@ export class MytableComponent implements OnInit {
     return item.name;
   }
 
+  // custom function to search keyword
+  async getListSearchedData(): Promise<boolean> {
+    let myurl = "http://localhost/ATWD_Project_2021/controller.php/bbq/" + this.keyword;
+    return new Promise(
+      resolve => {
+        this.http.get(myurl).subscribe({
+          next: (res) => {
+            // console.log(res);
+            console.log("searched data (i.e. row data) is fetched successfully.");
+            this.fillData(res);
+            resolve(true);          
+          },
+          error: (err) => {
+            console.log("Server call failed for searching: " + err);
+            resolve(false);
+          }
+        });
+      }
+    );
+  }
+
   // custom function to fetch data
   async getListData(): Promise<boolean> {
     
@@ -259,7 +300,7 @@ export class MytableComponent implements OnInit {
               resolve(true);          
             },
             error: (err) => {
-              console.log("Server call failed: " + err);
+              console.log("Server call failed for fetching: " + err);
               resolve(false);
             }
           }
@@ -301,6 +342,20 @@ export class MytableComponent implements OnInit {
     ); 
   }
 
+  // search keyword
+  search() {
+    console.log("keyword: " + this.keyword);
+    if (this.keyword == '') {
+      return;
+    }
+    this.onsearch();
+  }
+
+  // reset 
+  reset() {
+    console.log("reset is click.");
+    this.onload();
+  }
 
   // FIND 
   findBbq(gihs: string): BbqRecord {

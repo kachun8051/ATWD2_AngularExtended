@@ -17,6 +17,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 // import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
@@ -41,6 +44,9 @@ registerLocaleData(en);
     NzDropDownModule,
     NzDividerModule,
     FormsModule,
+    NzCardModule,
+    NzInputModule,
+    NzIconModule,
     ReactiveFormsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
