@@ -141,6 +141,16 @@ export class MytableComponent implements OnInit {
     );
   }
 
+  // FIND 
+  findBbq(gihs: string): BbqRecord {
+    for (let i = 0; i < this.listOfData.length; i++) {
+      if (this.listOfData[i].GIHS == gihs) {
+        return this.listOfData[i];
+      }
+    }
+    return this.emptyRecord;
+  }
+
   // INSERT
   addBbq(mTitle: string) {
     console.log("Add is clicked")
@@ -150,7 +160,13 @@ export class MytableComponent implements OnInit {
   }
   // UPDATE for expanded table
   editBbq2(mTitle: string, gihs: string) {
-
+    console.log("Edit2 is clicked");
+    let foundBbq: BbqRecord = this.findBbq(gihs);
+    if (foundBbq.GIHS == '') {
+      console.log('Not found (edit): ' + gihs);
+      return;
+    } 
+    this.editBbq(mTitle, foundBbq);
   }
 
   // UPDATE
@@ -164,7 +180,13 @@ export class MytableComponent implements OnInit {
 
   // DELETE for expanded table
   deleteBbq2(gihs: string) {
-
+    console.log("Delete2 is clicked");
+    let foundBbq: BbqRecord = this.findBbq(gihs);
+    if (foundBbq.GIHS == '') {
+      console.log('Not found (delete): ' + gihs);
+      return;
+    }
+    this.deleteBbq(foundBbq);
   }
 
   // DELETE

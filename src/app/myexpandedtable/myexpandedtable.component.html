@@ -1,5 +1,7 @@
+<app-mymodal [data]="editData" [(isVisible)]="modalIsVisible" (clickEvent)="clickEvent()" [title]="modalTitle">
+</app-mymodal>
 <button (click)="addBbq('Add BBQ')" nz-button [nzType]="'primary'" style="margin: 20px; width: 100px;">Add</button>
-  <nz-table #nestedTable [nzData]="listOfMaster" [nzPageSize]="10">
+<nz-table class="table-striped-rows" #nestedTable [nzData]="listOfMaster" [nzPageSize]="8">
     <thead>
       <tr>
         <th></th>
@@ -15,7 +17,7 @@
     </thead>
     <tbody>
       <ng-template ngFor let-data [ngForOf]="nestedTable.data">
-        <tr>
+        <tr >
           <td [(nzExpand)]="data.isexpand"></td>
           <td nzLeft>{{ data.GIHS }}</td>
           <td nzRight>{{ data.name }}</td>
@@ -23,8 +25,8 @@
           <td>{{ data.address }}</td>
           <td>{{ data.phone }}</td>
           <td>{{ data.hours }}</td>
-          <td><a (click)="editBbq2('Edit BBQ', data.GIHS)">Edit</a></td>
-          <td><a (click)="deleteBbq2(data.GIHS)" style="color:red">Delete</a></td>
+          <td><button (click)="editBbq2('Edit BBQ', data.GIHS)" nz-button [nzType]="'default'">Edit</button></td>
+          <td><button (click)="deleteBbq2(data.GIHS)" nz-button [nzType]="'default'" nzDanger>Delete</button></td>
         </tr>
         <tr [nzExpand]="data.isexpand">
           <nz-table #innerTable [nzData]="listOfDetail[data.id]" nzSize="middle" [nzShowPagination]="false">
@@ -36,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of innerTable.data"  style="background-color:#00FFFF" >
+              <tr *ngFor="let data of innerTable.data"  style="background-color: lightblue" >
                 <td>{{ data.facilities }}</td>
                 <td>{{ data.ancillary }}</td>
                 <td>{{ data.remarks }}</td>                
@@ -46,11 +48,4 @@
         </tr>
       </ng-template>
     </tbody>
-  </nz-table>
-
-  <app-mymodal 
-    [data]="editData" 
-    [(isVisible)]="modalIsVisible" 
-    (clickEvent)="clickEvent()"
-    [title]="modalTitle">
-  </app-mymodal>
+</nz-table>
