@@ -1,51 +1,50 @@
-
 .ant-table-wrapper {
-    width: 98%;
-    height: auto;
-    position: relative;
-    /* top: 10px; */
-    /*bottom: 10px;*/
-  }
-  .ant-table {
-    background-color: rgb(9,100,100);
-    color: white;
-  }
-  /* thead style */
-  .ant-table-thead > tr > th {
-    background-color: rgb(3,50,50);
-    color: white;
-  }
-  
-  /* selected row i.e. hover style */
-  .ant-table-tbody  > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
-      background-color: rgb(68, 114, 196) !important;
-  }
-  
-  /* remove border, reserve right border, content center, row height 
-  .ant-table-tbody > tr > td ,.ant-table-thead > tr > th{
-    border-bottom: none;
-    border-right: 1px solid #ccc;
-    text-align: center !important;
-    padding: 10px 10px !important;
-  }*/
-  
-  /* remove thead right most border */
-  .ant-table-container table > thead > tr:first-child th:last-child {
-    border-right: none;
-  }
-  /* remove tbody right most border */
-  .ant-table-container table > tbody > tr td:last-child {
-    border-right: none;
-  }
-  /* if empty data style */
-  .ant-empty-description {
-    color: white;
-  }
-  /* odd row style */
-  .table-color-odd {
-    background-color: rgb(9, 100, 100);
-  }
-  /* even row style */
-  .table-color-even {
-    background-color: rgb(19, 147, 147);
-  }
+  width: 98%;
+  height: auto;
+  position: relative;
+  /* top: 10px; */
+  /*bottom: 10px;*/
+}
+.ant-table {
+  background-color: rgb(9,100,100);
+  color: white;
+}
+/* thead style */
+.ant-table-thead > tr > th {
+  background-color: rgb(3,50,50);
+  color: white;
+}
+
+/* selected row i.e. hover style */
+.ant-table-tbody  > tr:hover:not(.ant-table-expanded-row) > td,.ant-table-row-hover,.ant-table-row-hover>td{
+    background-color: rgb(68, 114, 196) !important;
+}
+
+/* remove border, reserve right border, content center, row height 
+.ant-table-tbody > tr > td ,.ant-table-thead > tr > th{
+  border-bottom: none;
+  border-right: 1px solid #ccc;
+  text-align: center !important;
+  padding: 10px 10px !important;
+}*/
+
+/* remove thead right most border */
+.ant-table-container table > thead > tr:first-child th:last-child {
+  border-right: none;
+}
+/* remove tbody right most border */
+.ant-table-container table > tbody > tr td:last-child {
+  border-right: none;
+}
+/* if empty data style */
+.ant-empty-description {
+  color: white;
+}
+/* odd row style */
+.table-color-odd {
+  background-color: rgb(9, 100, 100);
+}
+/* even row style */
+.table-color-even {
+  background-color: rgb(19, 147, 147);
+}

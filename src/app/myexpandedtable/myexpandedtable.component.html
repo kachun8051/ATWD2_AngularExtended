@@ -1,18 +1,18 @@
 <app-mymodal [data]="editData" [(isVisible)]="modalIsVisible" (clickEvent)="clickEvent()" [title]="modalTitle">
 </app-mymodal>
 <button (click)="addBbq('Add BBQ')" nz-button [nzType]="'primary'" style="margin: 20px; width: 100px;">Add</button>
-<nz-table class="table-striped-rows" #nestedTable [nzData]="listOfMaster" [nzPageSize]="8">
+<nz-table *ngIf="isloaded" #nestedTable [nzData]="listOfMaster" [nzPageSize]="8" nzTableLayout="fixed">
     <thead>
-      <tr>
-        <th></th>
-        <th>GIHS</th>  
-        <th>Name</th>        
-        <th>District</th>
-        <th>Address</th>
-        <th>Phone</th>
-        <th>Opening Hours</th>
-        <th>Edit</th>
-        <th>Delete</th>
+      <tr>        
+        <th
+          *ngFor="let column of listOfColumns; trackBy: trackByName"
+          [(nzSortOrder)]="column.sortOrder"
+          [nzSortFn]="column.sortFn"
+          [nzFilters]="column.listOfFilter"
+          [nzFilterMultiple]="column.filterMultiple"
+          [nzFilterFn]="column.filterFn">
+          {{ column.name }}
+        </th>
       </tr>
     </thead>
     <tbody>

@@ -63,6 +63,9 @@ export class MymodelComponent implements OnInit {
   }
 
   ngOnChanges() {
+    if (this.data == undefined) {
+      return;
+    }
     console.log("mymodal.ngOnChanges");
     console.log("data input from mytable: " + JSON.stringify(this.data));
     console.log("GIHS: " + this.data['GIHS']);;

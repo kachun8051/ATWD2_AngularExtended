@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+//import { trimTrailingNulls } from '@angular/compiler/src/render3/view/util';
 import { Component, OnInit } from '@angular/core';
+// import { resolve } from 'dns';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BbqRecordMaster, BbqRecordDetail, BbqRecord, clsBbq } from '../BbqRecord.model';
+import { ColumnFilter, ColumnItem } from './mytable.model';
 
 @Component({
   selector: 'app-myexpandedtable',
@@ -10,11 +13,18 @@ import { BbqRecordMaster, BbqRecordDetail, BbqRecord, clsBbq } from '../BbqRecor
 })
 
 export class MytableComponent implements OnInit {
+  isloaded: boolean;
+  // list of data
   listOfData: BbqRecord[];
   // list of master record i.e. the head row
   listOfMaster: BbqRecordMaster[];
   // list of list of detail record i.e. the line row
   listOfDetail: BbqRecordDetail[][];
+  // table column header
+  listOfColumns: ColumnItem[];
+  // filter of district
+  listOfDistrictFilter: ColumnFilter[];
+  // http object
   http !: HttpClient;
   // edit data
   editData!: BbqRecord;
@@ -28,20 +38,24 @@ export class MytableComponent implements OnInit {
   modalService!: NzModalService;
   //serverData: String;
   //sortAgeFn = (a: DataItem, b: DataItem): number => a.age - b.age;
-  nameFilterFn = (list: string[], item: BbqRecord): boolean => list.some(name => item.name.indexOf(name) !== -1);
+  /*
+  districtFilterFn = (list: string[], item: BbqRecord): boolean => list.some(district => item.district.indexOf(district) !== -1);
   filterName = [
     { text: 'Joe', value: 'Joe' },
     { text: 'John', value: 'John' }
   ];
-
+  */
   constructor(http: HttpClient, modal: NzModalService) { 
     console.log("mytable's constructor");
+    this.isloaded = false;
     this.http = http;
     //this.confirmModal = modal;
     //this.serverData = "";
     this.listOfData = [];
     this.listOfMaster = [];
     this.listOfDetail = [];
+    this.listOfColumns = [];
+    this.listOfDistrictFilter = [];
     this.modalIsVisible = false;
     this.modalService = modal;
     // empty record for add process
@@ -62,29 +76,131 @@ export class MytableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.onload();    
+  }
+
+  async onload() {
     this.listOfData = [];
-    this.getListData();
+    this.listOfMaster = [];
+    this.listOfDetail = [];
+    this.listOfDistrictFilter = [];
+    // sequence of data loading and filling:
+    // 1. load the list of data for rows, fill the lists
+    // 2 load the list of district, fill the lists 
+    // 3. assign the listOfColumns 
+    this.isloaded = false;
+    //this.fillTheListOfColumns
+    await this.getDistrict()
+    .then( () => this.fillTheListOfColumns() )
+    .then( () => this.getListData() )
+    .then( () => {
+      this.isloaded = true;
+      console.log("isloaded is true.");
+    });
+    /*
+    await this.getListData()
+    .then(() => this.getDistrict())
+    .then(() => this.fillTheListOfColumns)
+    .then(() => this.isloaded = true);
+    */
+  }
+
+  fillTheListOfColumns() {
+    this.listOfColumns = [
+      {
+        name: '',
+        sortOrder: null,
+        sortFn: null,
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'GIHS',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.GIHS.localeCompare(b.GIHS),
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'Name',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.name.localeCompare(b.name),
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'District',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.district.localeCompare(b.district),
+        listOfFilter: this.listOfDistrictFilter,
+        filterMultiple: true,        
+        filterFn: (list: string[], item: BbqRecordMaster) => list.some(district => item.district.indexOf(district) !== -1)        
+      },
+      {
+        name: 'Address',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.address.localeCompare(b.address),        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'Phone',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.phone.localeCompare(b.phone),        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'Opening_Hours',
+        sortOrder: null,
+        sortFn: (a: BbqRecordMaster, b: BbqRecordMaster) => a.hours.localeCompare(b.hours),        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'Edit',
+        sortOrder: null,
+        sortFn: null,        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'Delete',
+        sortOrder: null,
+        sortFn: null,        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      }
+    ];
+    console.log("listOfColumns is set.");
   }
 
   // custom funtion (fillData) 
-  fillData(arr: Object): void {
+  fillData(obj: Object): void {
     //this.serverData = arr;
-    let objData = JSON.parse(JSON.stringify(arr));
+    let objData = JSON.parse(JSON.stringify(obj));
     let serverDataArr = objData.data;
     let arrTmp = [];
     let arrMaster = [];
     let arrDetail = [];
-    console.log(serverDataArr.length);
+    console.log("server data length: " + serverDataArr.length);
     // bbq in serverDataArr for-loop should be referred to actual json object 
     // but not BbqRecord model
     let i: number = 0;
     for (let bbq of serverDataArr) {
-      console.log(bbq.Name_en);
+      // console.log(bbq.Name_en);
       let obj: BbqRecord = {
         GIHS: bbq.GIHS,
         name: bbq.Name_en,
-        district: bbq.District_en,
+        district: bbq.District_en.trim(),
         address: bbq.Address_en,
         facilities: bbq.Facilities_en,
         ancillary: bbq.Ancillary_facilities_en,
@@ -98,7 +214,7 @@ export class MytableComponent implements OnInit {
         id: i,
         GIHS: bbq.GIHS,
         name: bbq.Name_en,
-        district: bbq.District_en,
+        district: bbq.District_en.trim(),
         address: bbq.Address_en,
         hours: bbq.Opening_hours_en,
         phone: bbq.Phone,
@@ -116,30 +232,75 @@ export class MytableComponent implements OnInit {
       arrTmp.push(obj);
       arrMaster.push(objMaster);
       arrDetail.push([objDetail]);
-      i = i + 1;
+      i += 1;
     }    
     this.listOfData = arrTmp;
     this.listOfMaster = arrMaster;
     this.listOfDetail = arrDetail;
-    console.log("data sources are set.");
+    console.log("lists of data source are set.");
+  }
+
+  trackByName(_: number, item: ColumnItem): string {
+    return item.name;
   }
 
   // custom function to fetch data
-  getListData() {
-    let myurl = "http://localhost/ATWD_Project_2021/controller.php/dbinit"
-    this.http.get(myurl).subscribe(
-      {      
-        next: (res) => {
-          // console.log(res);
-          console.log("data is fetched successfully.");
-          this.fillData(res);          
-        },
-        error: (err) => {
-          console.log("Server call failed: " + err);
-        }
+  async getListData(): Promise<boolean> {
+    
+    let myurl = "http://localhost/ATWD_Project_2021/controller.php/dbinit";
+    return new Promise(
+      resolve => {
+        this.http.get(myurl).subscribe(
+          {      
+            next: (res) => {
+              // console.log(res);
+              console.log("data (i.e. row data) is fetched successfully.");
+              this.fillData(res);
+              resolve(true);          
+            },
+            error: (err) => {
+              console.log("Server call failed: " + err);
+              resolve(false);
+            }
+          }
+        );
       }
     );
   }
+  // custom function to fetch district
+  async getDistrict(): Promise<boolean> {
+    
+    let myurl = "http://localhost/ATWD_Project_2021/controller.php/barbecue/District_en";
+    return new Promise(
+      resolve => {
+        this.http.get<any>(myurl).subscribe(
+          {      
+            next: (res) => {
+              // console.log(res);
+              console.log("data (i.e. district) is fetched successfully.");
+              let objRes = res;
+              if (objRes.issuccess == true) {
+                let lstRes = objRes.data;
+                for (let i = 0; i < lstRes.length; i++) {
+                  // console.log(lstRes[i]);
+                  this.listOfDistrictFilter.push({text: lstRes[i].trim(), value: lstRes[i].trim()});
+                }
+                resolve(true);
+              } else {
+                console.log("district cannot be fetched!");
+                resolve(false);
+              }                    
+            },
+            error: (err) => {
+              console.log("Server call failed: " + err);
+              resolve(false);
+            }
+          }
+        );
+      }
+    ); 
+  }
+
 
   // FIND 
   findBbq(gihs: string): BbqRecord {
