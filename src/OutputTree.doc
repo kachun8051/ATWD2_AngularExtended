@@ -18,17 +18,18 @@ C:.
 |   |   app.module.ts
 |   |   BbqRecord.model.ts
 |   |   
-|   +---mymodal
-|   |       mymodal.component.css
-|   |       mymodal.component.html
-|   |       mymodal.component.spec.ts
-|   |       mymodal.component.ts
+|   +---myexpandedtable
+|   |       myexpandedtable.component.css
+|   |       myexpandedtable.component.html
+|   |       myexpandedtable.component.spec.ts
+|   |       myexpandedtable.component.ts
+|   |       mytable.model.ts
 |   |       
-|   \---mytable
-|           mytable.component.css
-|           mytable.component.html
-|           mytable.component.spec.ts
-|           mytable.component.ts
+|   \---mymodal
+|           mymodal.component.css
+|           mymodal.component.html
+|           mymodal.component.spec.ts
+|           mymodal.component.ts
 |           
 +---assets
 |       .gitkeep

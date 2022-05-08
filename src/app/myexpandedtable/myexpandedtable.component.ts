@@ -89,9 +89,9 @@ export class MytableComponent implements OnInit {
     this.listOfDetail = [];
     this.listOfDistrictFilter = [];
     // sequence of data loading and filling:
-    // 1. load the searched list of data for rows, fill the lists
-    // 2 load the list of district, fill the lists 
-    // 3. assign the listOfColumns 
+    // 1. load the list of district
+    // 2. assign the listOfColumns  
+    // 3. fill the lists of data for rows, fill the lists 
     this.isloaded = false;
     //this.fillTheListOfColumns
     await this.getDistrict()
@@ -109,8 +109,8 @@ export class MytableComponent implements OnInit {
     this.listOfDetail = [];
     this.listOfDistrictFilter = [];
     // sequence of data loading and filling:
-    // 1. load the list of data for rows, fill the lists
-    // 2 load the list of district, fill the lists 
+    // 1. load the list of district, fill the lists
+    // 2 load the list of  data for rows, fill the lists 
     // 3. assign the listOfColumns 
     this.isloaded = false;
     //this.fillTheListOfColumns
