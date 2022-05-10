@@ -1,8 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-//import { trimTrailingNulls } from '@angular/compiler/src/render3/view/util';
 import { Component, OnInit } from '@angular/core';
-// import { timeStamp } from 'console';
-// import { resolve } from 'dns';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { BbqRecordMaster, BbqRecordDetail, BbqRecord, clsBbq } from '../BbqRecord.model';
 import { ColumnFilter, ColumnItem } from './mytable.model';
@@ -32,22 +29,14 @@ export class MytableComponent implements OnInit {
   // empty record is for add process
   emptyRecord: BbqRecord;
   // flag / indicator of showing modal
-  modalIsVisible: boolean;
+  modalIsVisible: boolean = false;
   modalTitle: string;
   // keyword for search
   keyword: string;
   // dialog
   confirmModal!: NzModalRef;
   modalService!: NzModalService;
-  //serverData: String;
-  //sortAgeFn = (a: DataItem, b: DataItem): number => a.age - b.age;
-  /*
-  districtFilterFn = (list: string[], item: BbqRecord): boolean => list.some(district => item.district.indexOf(district) !== -1);
-  filterName = [
-    { text: 'Joe', value: 'Joe' },
-    { text: 'John', value: 'John' }
-  ];
-  */
+  
   constructor(http: HttpClient, modal: NzModalService) { 
     console.log("mytable's constructor");
     this.isloaded = false;
@@ -370,13 +359,13 @@ export class MytableComponent implements OnInit {
   // INSERT
   addBbq(mTitle: string) {
     console.log("Add is clicked")
-    this.editData = this.emptyRecord;
-    this.modalIsVisible = true;
+    this.editData = this.emptyRecord;    
     this.modalTitle = mTitle;
+    this.modalIsVisible = true;
   }
   // UPDATE for expanded table
   editBbq2(mTitle: string, gihs: string) {
-    console.log("Edit2 is clicked");
+    console.log("Edit (expanded) is clicked");
     let foundBbq: BbqRecord = this.findBbq(gihs);
     if (foundBbq.GIHS == '') {
       console.log('Not found (edit): ' + gihs);
@@ -389,9 +378,9 @@ export class MytableComponent implements OnInit {
   editBbq(mTitle: string, data: BbqRecord) {
     console.log("Edit is clicked");
     //console.log(JSON.stringify(data));    
-    this.editData = data;    
-    this.modalIsVisible = true;
+    this.editData = data;
     this.modalTitle = mTitle;
+    this.modalIsVisible = true;
   }
 
   // DELETE for expanded table
@@ -433,10 +422,19 @@ export class MytableComponent implements OnInit {
   }
 
   // callback when add or edit completed
-  clickEvent() {
-    console.log("clickEvent (callback).");
-    this.getListData();
+  getclickEvent(jStr: string) {
+    console.log("getclickEvent: " + jStr);
+    let objret = JSON.parse(jStr);
+    if (objret.msg !== null) 
+    {
+      console.log("clickEvent (callback): " );
+      console.log("1. " + objret.msg);
+    }
+    if (objret.isdataload !== null && objret.isdataload == true)
+    {
+      console.log("2. getListData() is called.");
+      this.getListData();
+    }    
   }
-
 
 }

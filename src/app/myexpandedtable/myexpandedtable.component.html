@@ -1,7 +1,13 @@
-<app-mymodal [data]="editData" [(isVisible)]="modalIsVisible" (clickEvent)="clickEvent()" [title]="modalTitle">
+<app-mymodal 
+  [data]="editData" 
+  [(isVisible)]="modalIsVisible" 
+  okText="OK"
+  cancelText="Cancel"   
+  (clickEvent)="getclickEvent($event)"
+  [title]="modalTitle">
 </app-mymodal>
-<nz-card [nzBordered]="false">
-  
+<div> {{ modalIsVisible }} </div>
+<nz-card [nzBordered]="false">  
   <div nz-row [nzGutter]="16">
     <button nz-button nzType="primary" (click)="addBbq('Add BBQ')" style="margin-left:15px; width:100px;">Add</button>
     <div nz-col class="gutter-row" [nzSpan]="6">

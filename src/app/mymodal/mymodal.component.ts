@@ -14,13 +14,17 @@ export class MymodelComponent implements OnInit {
   @Input()
   title: string;
   @Input()
+  okText: string = "ok";
+  @Input()
+  cancelText: string = "cancel" ;
+  @Input()
   data: BbqRecord;
   @Input()
   isVisible: boolean; // flag or indicator whether showing modal
   @Output()
-  isVisibleChange = new EventEmitter(); 
+  isVisibleChange = new EventEmitter<any>(); 
   @Output()
-  clickEvent = new EventEmitter();
+  clickEvent = new EventEmitter<string>();
 
   isEdit: boolean;
   validateForm: FormGroup;
@@ -67,10 +71,8 @@ export class MymodelComponent implements OnInit {
       return;
     }
     console.log("mymodal.ngOnChanges");
-    console.log("data input from mytable: " + JSON.stringify(this.data));
+    //console.log("data input from mytable: " + JSON.stringify(this.data));
     console.log("GIHS: " + this.data['GIHS']);;
-    this.isVisible = true;
-    //return;
     if (this.data['GIHS'] !== '') {
       this.isEdit = true; 
     } else {
@@ -137,14 +139,13 @@ export class MymodelComponent implements OnInit {
     if (this.isEdit) {   
       console.log("before put.");   
       this.http.put(url, params).subscribe({
-        next: (res) => { 
-          console.log("Edit success.")
-          this.clickEvent.emit();
-          this.isVisible = false; 
+        next: (res) => {            
+          this.clickEvent.emit(JSON.stringify({isdataload: true, msg: 'Edit success.'}));
+          this.isVisibleChange.emit(false);
         },
-        error: (err) => { 
-          //this.serverData = "Server call failed: " + err;
+        error: (err) => {
           console.log("Edit error" + err);
+          this.clickEvent.emit(JSON.stringify({isdataload: false, msg: 'Edit error'}));
         }
       });
     } 
@@ -152,31 +153,31 @@ export class MymodelComponent implements OnInit {
       console.log("before post.");
       this.http.post(url, params).subscribe({
         next: (res) => {
-          console.log("Insert success.");
-          this.clickEvent.emit();
-          this.isVisible = false;      
+          this.clickEvent.emit(JSON.stringify({isdataload: true, msg: "Insert success"}));
+          this.isVisibleChange.emit(false);
         },
         error: (err) => {
           console.log("Insert error" + err);
+          this.clickEvent.emit(JSON.stringify({isdataload: false, msg: 'Insert error.'}));
         }
       });
     }
-    this.isVisibleChange.emit(false);
   }
-
+/*
   showModal(): void {
     this.isVisible = true;
     this.title = 'The first Modal';
   }
-
+*/
   handleOk(): void {
-    console.log('Button ok clicked!');
-    //this.isVisible = false;
+    console.log('handleOk is called');
+    this.clickEvent.emit(JSON.stringify({isdataload: false, msg: 'Button ok clicked.'}));
     this.submitForm();
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
-    this.isVisible = false;
+    console.log('handleCancel is called');
+    this.clickEvent.emit(JSON.stringify({isdataload: false, msg: 'Button cancel clicked.'}));
+    this.isVisibleChange.emit(false);
   }
 }
