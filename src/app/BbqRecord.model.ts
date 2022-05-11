@@ -86,6 +86,30 @@ class clsBbq implements BbqRecord {
         strHtml += '</table>';
         return strHtml;
     }
+
+    convertGeoLoc(i_str: string): number {  
+        const arr = i_str.split("-");
+        if (arr.length != 3) {
+            console.log("arr's length: " + arr.length);
+            return 0;
+        }      
+        let loc = parseFloat(arr[0]) + parseFloat(arr[1])/60 + parseFloat(arr[2])/3600;
+        console.log("loc: " + loc);
+        return loc;
+    }
+    
+    formatGeoLoc(i_str: string): string{
+        console.log("format geoloc: " + i_str);
+        const arr = i_str.split("-");
+        if (arr.length != 3) {
+            console.log("arr's length: " + arr.length);
+            return i_str;
+        } 
+        let deg2 = arr[0].toString() + decodeURI('%C2%B0') + " ";
+        let min2 = arr[1].toString() + "'  ";
+        let sec2 = arr[2].toString() + "\"";
+        return deg2 + min2 + sec2;
+    }
 }
 
 export { BbqRecordMaster, BbqRecordDetail, BbqRecord, clsBbq };

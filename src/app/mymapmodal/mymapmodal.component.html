@@ -1,0 +1,28 @@
+<nz-modal 
+  [(nzVisible)]="isVisible" 
+  [nzTitle]="title"
+  nzOkText="OK"
+  (nzOnOk)="handleOk()"
+  (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <table style="width:40%">  
+            <tr>
+                <td colspan="2">
+                    <app-mymap [center] = "center" [markerPositions]="[center]" >
+                    </app-mymap>
+                </td>
+            <tr>  
+            <tr>
+                <td>Latitude</td>
+                <td>Longitude</td>      
+            </tr>
+            <tr>
+                <td>{{ longitude2 }}</td>
+                <td>{{ latitude2 }}</td>
+            </tr>
+        </table>
+    </ng-container>
+</nz-modal>
+
+
+

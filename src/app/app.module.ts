@@ -6,7 +6,8 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MytableComponent } from './myexpandedtable/myexpandedtable.component';
 import { MymodelComponent } from './mymodal/mymodal.component';
@@ -21,7 +22,11 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 // import { FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MymapComponent } from './mymap/mymap.component';
+import { MymapmodalComponent } from './mymapmodal/mymapmodal.component'
+
 
 registerLocaleData(en);
 
@@ -29,12 +34,16 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     MytableComponent,
-    MymodelComponent
+    MymodelComponent,
+    MymapComponent,
+    MymapmodalComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpClientJsonpModule,
+    CommonModule,
     BrowserAnimationsModule,
     NzTableModule,
     NzModalModule,
@@ -47,9 +56,10 @@ registerLocaleData(en);
     NzCardModule,
     NzInputModule,
     NzIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GoogleMapsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

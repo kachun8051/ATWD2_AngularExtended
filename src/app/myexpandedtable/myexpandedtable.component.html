@@ -6,7 +6,14 @@
   (clickEvent)="getclickEvent($event)"
   [title]="modalTitle">
 </app-mymodal>
-<div> {{ modalIsVisible }} </div>
+<app-mymapmodal 
+  [(isVisible)]="mapIsVisible" 
+  [latitude]="lat" 
+  [longitude]="lng" 
+  [latitude2]="lat2"
+  [longitude2]="lng2"
+  [center]="center">
+</app-mymapmodal>
 <nz-card [nzBordered]="false">  
   <div nz-row [nzGutter]="16">
     <button nz-button nzType="primary" (click)="addBbq('Add BBQ')" style="margin-left:15px; width:100px;">Add</button>
@@ -51,6 +58,7 @@
           <td>{{ data.hours }}</td>
           <td><button (click)="editBbq2('Edit BBQ', data.GIHS)" nz-button [nzType]="'default'">Edit</button></td>
           <td><button (click)="deleteBbq2(data.GIHS)" nz-button [nzType]="'default'" nzDanger>Delete</button></td>
+          <td><button (click)="openBbqMap(data.GIHS)" nz-button [nzType]="'default'">Google Map</button></td>
         </tr>
         <tr [nzExpand]="data.isexpand">
           <nz-table #innerTable [nzData]="listOfDetail[data.id]" nzSize="middle" [nzShowPagination]="false">

@@ -31,6 +31,14 @@ export class MytableComponent implements OnInit {
   // flag / indicator of showing modal
   modalIsVisible: boolean = false;
   modalTitle: string;
+  // google map variables
+  mapIsVisible: boolean = false;
+  mapTitle: string;
+  lat: number;
+  lng: number;
+  lat2: string;
+  lng2: string;
+  center: any;
   // keyword for search
   keyword: string;
   // dialog
@@ -51,6 +59,14 @@ export class MytableComponent implements OnInit {
     this.keyword = '';
     this.modalIsVisible = false;
     this.modalService = modal;
+    // google map variables
+    this.mapIsVisible = false;
+    this.mapTitle = '';
+    this.lat = 0;
+    this.lng = 0;
+    this.lat2 = '';
+    this.lng2 = '';
+    this.center = {lat: 0, lng: 0};
     // empty record for add process
     this.emptyRecord = {
       GIHS: '',
@@ -182,6 +198,14 @@ export class MytableComponent implements OnInit {
       },
       {
         name: 'Delete',
+        sortOrder: null,
+        sortFn: null,        
+        listOfFilter: [],
+        filterMultiple: false,
+        filterFn: null
+      },
+      {
+        name: 'GoogleMap',
         sortOrder: null,
         sortFn: null,        
         listOfFilter: [],
@@ -381,6 +405,26 @@ export class MytableComponent implements OnInit {
     this.editData = data;
     this.modalTitle = mTitle;
     this.modalIsVisible = true;
+  }
+
+  // GOOGLE MAP
+  openBbqMap(gihs: string){
+    console.log("Google Map i.e. openBbqMap is clicked");
+    let foundBbq: BbqRecord = this.findBbq(gihs);
+    if (foundBbq.GIHS == '') {
+      console.log('Not found (delete): ' + gihs);
+      return;
+    }
+    let obj = new clsBbq();
+    obj.setBbqRecord(foundBbq);
+    this.mapIsVisible = true;
+    this.mapTitle = obj.name;
+    // this.editData = foundBbq;
+    this.lat = obj.convertGeoLoc(obj.latitude);
+    this.lng = obj.convertGeoLoc(obj.longitude);
+    this.lat2 = obj.formatGeoLoc(obj.latitude);
+    this.lng2 = obj.formatGeoLoc(obj.longitude);
+    this.center = { lat: this.lat, lng: this.lng };
   }
 
   // DELETE for expanded table
