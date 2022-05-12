@@ -70,7 +70,7 @@
               <input nz-input id="longitude" formControlName="longitude">
               <ng-template #longitudeErrorTpl let-control>                  
                   <ng-container *ngIf="control.hasError('required')">Please input longitude!</ng-container>
-                  <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (x-x-x)!</ng-container>
+                  <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (xxx-xx-xx)!</ng-container>
               </ng-template>
             </nz-form-control>
           </nz-form-item>
@@ -84,7 +84,7 @@
               <input nz-input id="latitude" formControlName="latitude">
               <ng-template #latitudeErrorTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">Please input longitude!</ng-container>
-                <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (x-x-x)!</ng-container>
+                <ng-container *ngIf="control.hasError('pattern')">Please input pattern as (xx-xx-xx)!</ng-container>
               </ng-template>
             </nz-form-control>
           </nz-form-item>
