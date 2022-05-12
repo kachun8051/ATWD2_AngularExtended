@@ -8,12 +8,10 @@ import { catchError, map } from 'rxjs/operators';
   templateUrl: './mymap.component.html',
   styleUrls: ['./mymap.component.css']
 })
-
+// reference: https://github.com/angular/components/blob/main/src/google-maps/map-marker/README.md
+// reference: https://github.com/angular/components/tree/main/src/google-maps#readme
 export class MymapComponent implements OnInit {
   apiLoaded: Observable<boolean>;
-  //lati: number;
-  //long: number;
-  
   @Input()
   center: google.maps.LatLngLiteral;
   @Input()

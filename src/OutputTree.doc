@@ -25,6 +25,18 @@ C:.
 |   |       myexpandedtable.component.ts
 |   |       mytable.model.ts
 |   |       
+|   +---mymap
+|   |       mymap.component.css
+|   |       mymap.component.html
+|   |       mymap.component.spec.ts
+|   |       mymap.component.ts
+|   |       
+|   +---mymapmodal
+|   |       mymapmodal.component.css
+|   |       mymapmodal.component.html
+|   |       mymapmodal.component.spec.ts
+|   |       mymapmodal.component.ts
+|   |       
 |   \---mymodal
 |           mymodal.component.css
 |           mymodal.component.html

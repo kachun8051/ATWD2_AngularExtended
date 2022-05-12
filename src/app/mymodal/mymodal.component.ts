@@ -40,7 +40,7 @@ export class MymodelComponent implements OnInit {
       district: [null, [Validators.required, Validators.minLength(5)]],
       address: [null, [Validators.required, Validators.minLength(10)]],
       longitude: [null, [Validators.required, Validators.pattern("^-{0,1}[0-9]{1,3}-[0-9]{1,2}-[0-9]{1,2}$")]],
-      latitude: [null, [Validators.required, Validators.pattern("^-{0,1}[0-9]{1,3}-[0-9]{1,2}-[0-9]{1,2}$")]]
+      latitude: [null, [Validators.required, Validators.pattern("^-{0,1}[0-9]{1,2}-[0-9]{1,2}-[0-9]{1,2}$")]]
     });
     this.http = http;
     this.emptyRecord = {
